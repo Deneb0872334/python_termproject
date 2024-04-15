@@ -1,0 +1,27 @@
+<!-- templates/home.html -->
+<html>
+<body>
+    <h1>Welcome, {{ request.user.username }}!</h1>
+    <p>This page is only visible to logged-in users.</p>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Questions</h2>
+        <ul>
+            {% for question in questions %}
+            <li>
+                <div>
+                    <p>Question: {{ question.question }}</p>
+                    <label for="choice1"><input type="radio" id="choice1" value="">A: {{ question.choice1 }}</label><br>
+                    <label for="choice2"><input type="radio" id="choice2" value="">B: {{ question.choice2 }}</label><br>
+                    <label for="choice3"><input type="radio" id="choice3" value="">C: {{ question.choice3 }}</label><br>
+                    <label for="choice4"><input type="radio" id="choice4" value="">D: {{ question.choice4 }}</label><br>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <a href="{% url 'logout' %}?next=/">Logout</a>
+</body>
+</html>
