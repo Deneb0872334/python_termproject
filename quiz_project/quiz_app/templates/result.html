@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <p>Score: {{ score }} / 5</p>
+    <p>Percentage: {{ percentage }}</p>
+    <p>{{ message }}</p>
+    <ul>
+        {% for question, value, blnCorrect in results %}
+            <li>{{ question }} - Your answer: {{ value }} - 
+                {% if blnCorrect %}
+                    Correct
+                {% else %}
+                    Incorrect
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <br><br>
+    <h3>Players:</h3>
+    <ul>
+        {% for player in players %}
+            <li>{{ player.first_name }} {{ player.last_name }} - Score: {{ player.score }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,27 +1,43 @@
 <!-- templates/home.html -->
 <html>
 <body>
-    <h1>Welcome, {{ request.user.username }}!</h1>
+    <h1>Welcome, {{ user.first_name }}!</h1>
     <p>This page is only visible to logged-in users.</p>
-    <form method="post">
+    {% if show_results %}
+    <h2>Results</h2>
+    <ul>
+        {% for question, value, is_correct in results %}
+        <li>{{ question }} - Your answer {{ value }} -
+            {% if is_correct %}
+                Correct
+            {% else %}
+                Incorrect
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="post" action="{% url 'display_result' %}">
         {% csrf_token %}
+        
         <h2>Questions</h2>
         <ul>
             {% for question in questions %}
             <li>
                 <div>
                     <p>Question: {{ question.question }}</p>
-                    <label for="choice1"><input type="radio" id="choice1" value="">A: {{ question.choice1 }}</label><br>
-                    <label for="choice2"><input type="radio" id="choice2" value="">B: {{ question.choice2 }}</label><br>
-                    <label for="choice3"><input type="radio" id="choice3" value="">C: {{ question.choice3 }}</label><br>
-                    <label for="choice4"><input type="radio" id="choice4" value="">D: {{ question.choice4 }}</label><br>
+                    <label for="choice1"><input type="radio" name="choice_{{ question.id }}" id="choice1" value="{{ question.choice1 }}">A: {{ question.choice1 }}</label><br>
+                    <label for="choice2"><input type="radio" name="choice_{{ question.id }}" id="choice2" value="{{ question.choice2 }}">B: {{ question.choice2 }}</label><br>
+                    <label for="choice3"><input type="radio" name="choice_{{ question.id }}" id="choice3" value="{{ question.choice3 }}">C: {{ question.choice3 }}</label><br>
+                    <label for="choice4"><input type="radio" name="choice_{{ question.id }}" id="choice4" value="{{ question.choice4 }}">D: {{ question.choice4 }}</label><br>
                 </div>
             </li>
             {% endfor %}
         </ul>
-        <button type="submit">Submit</button>
+        <input type="submit" value="Submit">
     </form>
-    
+
     <a href="{% url 'logout' %}?next=/">Logout</a>
 </body>
 </html>

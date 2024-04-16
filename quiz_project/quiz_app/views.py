@@ -1,29 +1,63 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Quiz
+from django.shortcuts import render, redirect
+from .models import Quiz, Player
 
 import random
 
 # Create your views here.
 @login_required
 def home(request):
-    all_questions =  Quiz.objects.all()
+    if request.method == 'GET':
+        all_questions =  Quiz.objects.all()
+        if len(all_questions) >= 5:
+            random_questions = random.sample(list(all_questions), 5) # Randomly pick 5 questions
+            return render(request, 'home.html', {'questions': random_questions})
+        else:
+            return render(request, 'error.html', {'error': 'Not enough questions'})
+    else:
+        return render(request, 'error.html', {'error': 'Method not allowed'})
 
-    random_questions = random.sample(list(all_questions), 5) # Randomly pick 5 questions
-    print("Home: Step 1")
+def display_result(request): 
     if request.method == 'POST':
-        print("Home: POST")
-        selected_answers = {}
+        iScore = 0
+        arrResults = []
         for key, value in request.POST.items():
-            print(f"Home: Step 2: {value}")
-            if key.startswith('choice1'):
-                print("Home: Step 3")
-                question_id = key.replace('question','')
-                selected_answers[question_id] = value
-                print(f"Question: {question_id}, Answer: {value}")
+            if key.startswith('choice_'):
+                iQuestionID = key.split('_')[1]
+                objQuestion = Quiz.objects.get(id=iQuestionID)
+                blnCorrect = (value == objQuestion.answer)
+                arrResults.append((objQuestion.question, value, blnCorrect))
+                if blnCorrect:
+                    iScore += 1
+        iPercentage = (iScore / 5) * 100
+        strMessage = ""
+        match iScore:
+            case 0:
+                strMessage = "Please try again!"
+            case 1:
+                strMessage = "Please try again!"
+            case 2:
+                strMessage = "Please try again!"
+            case 3:
+                strMessage = "Good job!"
+            case 4:
+                strMessage = "Excellent work!"
+            case 5:
+                strMessage = "You are a genius!"
+
+        # Save player name and score in DB Model
+        objPlayer, created = Player.objects.get_or_create(username = request.user.username)
+        objPlayer.first_name = request.user.first_name
+        objPlayer.last_name = request.user.last_name
+        objPlayer.score = iScore
+        objPlayer.save()
+        # Get all Players to be displayed
+        arrPlayers = Player.objects.all().order_by('-score') # Order by descending score
+        # You can store the results or pass them to another template
+        return render(request, 'result.html', {'results': arrResults, 'score': iScore, 'percentage': iPercentage, 'message': strMessage, 'players': arrPlayers})
             # 'selected_answers' dictionary contains question IDs and their selected answers
             # compare these with the correct answers in the database
     else:
-        # handle GET request (initial page load) logic here
-        pass
-    return render(request, 'home.html', {'questions': random_questions})
+        # Optionally handle other methods, like PUT, DELETE if not applicable
+        return render(request, 'error.html', {'error': 'Method not allowed'})
+
