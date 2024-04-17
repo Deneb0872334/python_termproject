@@ -19,6 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('django.contrib.auth.urls')), # Include auth URLs for login, logout
-    path('', include('quiz_app.urls')), # Assuming your app's URLs are managed here
+    # This setting, displays our templates/registration/login.html, don't include 'login/'
+    path('', include('django.contrib.auth.urls')), 
+    path('', include('quiz_app.urls')),
 ]

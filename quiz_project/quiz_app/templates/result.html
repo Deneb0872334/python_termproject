@@ -22,11 +22,26 @@
         {% endfor %}
     </ul>
     <br><br>
+    {% if play_again %}
+    <h3>Your score is below 3</h3>
+    <p>Do you want to play again?</p>
+    <form action="{% url 'home' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="play_again" value="yes">Yes</button>
+        <button type="submit" name="play_again" value="no">No</button>
+    </form>
+    {% endif %}
+    <br><br>
     <h3>Players:</h3>
     <ul>
         {% for player in players %}
             <li>{{ player.first_name }} {{ player.last_name }} - Score: {{ player.score }}</li>
         {% endfor %}
     </ul>
+    <br>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

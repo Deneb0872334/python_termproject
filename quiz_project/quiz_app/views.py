@@ -7,7 +7,15 @@ import random
 # Create your views here.
 @login_required
 def home(request):
-    if request.method == 'GET':
+    # This is the currently working code for home, don't change, can display question already
+    if request.method == 'POST':
+        all_questions =  Quiz.objects.all()
+        if len(all_questions) >= 5:
+            random_questions = random.sample(list(all_questions), 5) # Randomly pick 5 questions
+            return render(request, 'home.html', {'questions': random_questions})
+        else:
+            return render(request, 'error.html', {'error': 'Not enough questions'})
+    elif request.method == 'GET':
         all_questions =  Quiz.objects.all()
         if len(all_questions) >= 5:
             random_questions = random.sample(list(all_questions), 5) # Randomly pick 5 questions
@@ -45,6 +53,12 @@ def display_result(request):
             case 5:
                 strMessage = "You are a genius!"
 
+        # If score is below 3, ask Player if want to play again
+        if iScore < 3:
+            blnPlayAgain = True
+        else:
+            blnPlayAgain = False
+        
         # Save player name and score in DB Model
         objPlayer, created = Player.objects.get_or_create(username = request.user.username)
         objPlayer.first_name = request.user.first_name
@@ -53,10 +67,7 @@ def display_result(request):
         objPlayer.save()
         # Get all Players to be displayed
         arrPlayers = Player.objects.all().order_by('-score') # Order by descending score
-        # You can store the results or pass them to another template
-        return render(request, 'result.html', {'results': arrResults, 'score': iScore, 'percentage': iPercentage, 'message': strMessage, 'players': arrPlayers})
-            # 'selected_answers' dictionary contains question IDs and their selected answers
-            # compare these with the correct answers in the database
+        return render(request, 'result.html', {'results': arrResults, 'score': iScore, 'percentage': iPercentage, 'message': strMessage, 'players': arrPlayers, 'play_again': blnPlayAgain})
     else:
         # Optionally handle other methods, like PUT, DELETE if not applicable
         return render(request, 'error.html', {'error': 'Method not allowed'})

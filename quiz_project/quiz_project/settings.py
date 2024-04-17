@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -69,6 +70,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'quiz_project.wsgi.application'
+
+# settings.py
+LOGIN_URL = '/login/' # plain '/login/' works already to redirect home to login when not logged in yet
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 
 # Database
