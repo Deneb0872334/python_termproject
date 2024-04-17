@@ -1,11 +1,81 @@
 <!-- templates/registration/login.html -->
-<html>
-<body>
-    <h1>Login</h1>
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-</body>
+
+<!-- Authors: 
+    Deneb Arc  ID C0872334
+    Dumar RUge ID C0869984
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: #4CAF50; /* Green text */
+            font-family: 'Courier New', Courier, monospace;
+        }
+    
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .title {
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #4CAF50, 0 0 10px #4CAF50; /* Futuristic glow effect */
+        }
+    
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .submit-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.5s; /* Transition effect */
+            margin: 5px; /* Add some margin */
+            background-color: transparent; /* Make the background transparent */
+            color: #4CAF50; /* Green text */
+            border: 2px solid #4CAF50; /* Green border */
+        }
+    
+        .submit-btn:hover {
+            background-color: #4CAF50; /* Green background on hover */
+            color: white; /* White text on hover */
+            transform: scale(1.1); /* Slightly increase the size on hover */
+        }
+    </style>
+</head>
+
 </html>
+
+
+
+<body>
+    <div class="container">
+        <h1 class="title">Login</h1>
+        <form class="login-form" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="submit-btn" type="submit">Login</button>
+        </form>
+    </div>
+</body>
+
+
+

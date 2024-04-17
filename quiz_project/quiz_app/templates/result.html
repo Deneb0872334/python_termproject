@@ -1,12 +1,93 @@
+<!-- Authors: 
+    Deneb Arc  ID C0872334
+    Dumar RUge ID C0869984
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results</title>
+
+    <style>
+        body {
+            background-color: #131313;
+            color: #fff;
+            margin-left: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-header{
+            font-size: 50px;
+            margin-top: 20px;
+            text-align: center;
+            color: #33ff33; 
+            text-shadow: 0 0 3px #33ff33, 0 0 6px #33ff33, 0 0 9px #33ff33, 0 0 12px #33ff33; 
+        }
+        .quiz-container{
+            max-width: 600px;
+            margin:0 auto; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .options{
+            list-style-type: none;
+            padding: 0;
+            display: flex; /* Add these lines to center the options */
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        h3 {
+            font-size: 30px;
+            color: #4CAF50; /* Green text */
+            text-align: center; /* Center the text */
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #4CAF50, 0 0 10px #4CAF50; /* Futuristic glow effect */
+        }
+    
+        .yes-btn, .no-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.5s; /* Transition effect */
+            margin: 5px; /* Add some margin */
+            background-color: transparent; /* Make the background transparent */
+            color: #4CAF50; /* Green text */
+            border: 2px solid #4CAF50; /* Green border */
+        }
+    
+        .yes-btn:hover, .no-btn:hover {
+            background-color: #4CAF50; /* Green background on hover */
+            color: white; /* White text on hover */
+            transform: scale(1.1); /* Slightly increase the size on hover */
+        }
+        .logout-btn {
+            position: absolute; /* Absolute positioning */
+            top: 10px; /* Position from the top */
+            right: 10px; /* Position from the right */
+            background-color: transparent; /* No background */
+            border: none; /* No border */
+            color: #4CAF50; /* Green text */
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.5s; /* Transition effect */
+            margin: 10px; /* Add margin */
+            padding: 10px; /* Add padding */
+        }
+    
+        .logout-btn:hover {
+            color: #33ff33; /* Lighter green text on hover */
+        }
+    </style>
 </head>
 <body>
-    <h1>Quiz Results</h1>
+    <div class="quiz-header"><h1>Quiz Results</h1></div>
     <p>Score: {{ score }} / 5</p>
     <p>Percentage: {{ percentage }}</p>
     <p>{{ message }}</p>
@@ -27,8 +108,8 @@
     <p>Do you want to play again?</p>
     <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
-        <button type="submit" name="play_again" value="yes">Yes</button>
-        <button type="submit" name="play_again" value="no">No</button>
+        <button class="yes-btn" type="submit" name="play_again" value="yes">Yes</button>
+        <button class="no-btn" type="submit" name="play_again" value="no">No</button>
     </form>
     {% endif %}
     <br><br>
@@ -41,7 +122,7 @@
     <br>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <button class="logout-btn" type="submit">Logout</button>
     </form>
 </body>
 </html>

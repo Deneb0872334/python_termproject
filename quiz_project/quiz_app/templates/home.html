@@ -1,17 +1,97 @@
 <!-- templates/home.html -->
-<html>
+
+<!-- Authors: 
+    Deneb Arc  ID C0872334
+    Dumar RUge ID C0869984
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+
+    <style>
+        body {
+            background-color: #131313;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-header{
+            font-size: 50px;
+            margin-top: 20px;
+            text-align: center;
+            color: #33ff33; 
+            text-shadow: 0 0 3px #33ff33, 0 0 6px #33ff33, 0 0 9px #33ff33, 0 0 12px #33ff33; 
+        }
+        .quiz-container{
+            max-width: 600px;
+            margin:0 auto; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .options{
+            list-style-type: none;
+            padding: 0;
+            display: flex; /* Add these lines to center the options */
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: transparent; /* Make the background transparent */
+            color: #4CAF50; /* Green text */
+            border: 2px solid #4CAF50; /* Green border */
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.5s; /* Transition effect */
+        }
+    
+        .submit-btn:hover {
+            background-color: #4CAF50; /* Green background on hover */
+            color: white; /* White text on hover */
+            transform: scale(1.1); /* Slightly increase the size on hover */
+        }
+        .logout-btn {
+            position: absolute; /* Absolute positioning */
+            top: 10px; /* Position from the top */
+            right: 10px; /* Position from the right */
+            background-color: transparent; /* No background */
+            border: none; /* No border */
+            color: #4CAF50; /* Green text */
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.5s; /* Transition effect */
+            margin: 10px; /* Add margin */
+            padding: 10px; /* Add padding */
+        }
+    
+        .logout-btn:hover {
+            color: #33ff33; /* Lighter green text on hover */
+        }
+    </style>
+</head>
+
+</html>
 <body>
-    <h1>Welcome, {{ user.first_name }}!</h1>
+    <div class="quiz-header"><h1 >Welcome, {{ user.first_name }}!</h1></div>
     
     <!-- Display the Question, Correct Answer, Player Answer, Result -->
+    <div class="quiz-container">
     <form method="post" action="{% url 'display_result' %}">
         {% csrf_token %}
         <h2>Questions</h2>
-        <ul>
+        <ul class="options">
             {% for question in questions %}
             <li>
                 <div>
-                    <p>Question: {{ question.question }}</p>
+                    <div calss="question"><p>Question: {{ question.question }}</p></div>
                     <label for="choice1"><input type="radio" name="choice_{{ question.id }}" id="choice1" value="{{ question.choice1 }}">A: {{ question.choice1 }}</label><br>
                     <label for="choice2"><input type="radio" name="choice_{{ question.id }}" id="choice2" value="{{ question.choice2 }}">B: {{ question.choice2 }}</label><br>
                     <label for="choice3"><input type="radio" name="choice_{{ question.id }}" id="choice3" value="{{ question.choice3 }}">C: {{ question.choice3 }}</label><br>
@@ -20,13 +100,13 @@
             </li>
             {% endfor %}
         </ul>
-        <input type="submit" value="Submit">
+        <input class="submit-btn" type="submit" value="Submit">
     </form>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <button class="logout-btn"  type="submit">Logout</button>
     </form>
-
+</div>
     <!--
     {% if show_results %}
     <h2>Results</h2>
@@ -68,4 +148,4 @@
     </form>
     -->
 </body>
-</html>
+
